@@ -39,4 +39,29 @@ io.on("connection", (socket) => {
   });
 });
 
+const helmet = require("helmet");
+
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: [
+          "'self'",
+          "https://your-vercel-domain.vercel.app", // Replace with your actual domain
+          "https://vercel.live", // To allow Vercel's live feedback script
+          "'unsafe-inline'", // Allows inline scripts, can be removed for stricter CSP
+        ],
+        connectSrc: [
+          "'self'",
+          "https://your-vercel-domain.vercel.app",
+          "https://vercel.live",
+        ],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        imgSrc: ["'self'", "data:"],
+      },
+    },
+  })
+);
+
 server.listen(process.env.PORT || 3030);
